@@ -5,6 +5,7 @@ async function main() {
   const factory = await Factory.deploy();
 
   await factory.deployed();
+  console.log(factory);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

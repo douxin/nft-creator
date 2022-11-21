@@ -7,6 +7,7 @@ interface ICollection is IERC721 {
     event TokenDeleted(address owner, uint256 tokenId);
 
     function setBaseURI(string memory newBaseUri) external;
+    function currentTokenId() external returns (uint256);
     function deleteToken(uint256 tokenId) external;
     function deleteCollection() external;
 }
