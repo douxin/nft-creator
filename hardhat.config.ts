@@ -9,9 +9,9 @@ const config: HardhatUserConfig = {
     ganacha: {
       url: 'http://127.0.0.1:7545',
       accounts: [
-        // test accounts, shoule be changed
-        '17f27fe2507cf6c5036e5808520b405525ea16587efaed1098c8cf28a5603d11',
-        '4cfbbade4945101a96d96e469d90c5f757e82b8d6c13bf2ca5f65eecf020d55a',
+        // ganacha test accounts
+        '31d2eb1169a3f8418bbb1fb94f37cacb73f7beaa37c00803c59d1093c3cf2236',
+        'ea2a550267d19a5ea5fb02146f3472f699f4149256c22437d6eaea5ac07e9f1b',
       ]
     }
   }

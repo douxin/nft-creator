@@ -1,13 +1,13 @@
 import { ethers } from "hardhat";
 
-const factoryContractAddr = '0x973a6be1C739E8901A02b71D252bD9B4E31E0Fe0';
+const factoryContractAddr = '0x10e1f1541c3a274bc3EDf90532d96f93038FcD80';
 const abi = require('../artifacts/contracts/CreatorFactory.sol/CreatorFactory.json').abi;
 const ganachaUrl = 'http://127.0.0.1:7545';
 const provider = new ethers.providers.JsonRpcProvider(ganachaUrl);
-const userPrivateKey = '17f27fe2507cf6c5036e5808520b405525ea16587efaed1098c8cf28a5603d11';
+const user = '0x6dbf62CDF7BD6051Ae8579515246971ca10ac8Ca';
+const userPrivateKey = '31d2eb1169a3f8418bbb1fb94f37cacb73f7beaa37c00803c59d1093c3cf2236';
 const signer = new ethers.Wallet(userPrivateKey, provider);
 const contract = new ethers.Contract(factoryContractAddr, abi, signer);
-const user = '0x6305f47113F2BD96F1cc853308595B5fc6996753';
 
 const collectionAbi = require('../artifacts/contracts/Collection.sol/Collection.json').abi;
 
@@ -24,11 +24,26 @@ const createColelction = async (name: string, symbol: string, baseUri: string) =
 }
 
 const showCollectionInfo = async (collection: string) => {
-    const _contract = new ethers.Contract(collection, collectionAbi, signer);
+    const _contract = new ethers.Contract(collection, collectionAbi, provider);
     return Promise.all([
         _contract.name(),
         _contract.symbol(),
     ])
+}
+
+const showTokenInfo = async (collection: string, tokenId: number) => {
+    const _contract = new ethers.Contract(collection, collectionAbi, provider);
+    return Promise.all([
+        _contract.balanceOf(user),
+        _contract.ownerOf(tokenId),
+        _contract.tokenURI(tokenId),
+    ])
+}
+
+const mintTokenOfCollection = async (collection: string) => {
+    const _contract = new ethers.Contract(collection, collectionAbi, signer);
+    const tokenId = await _contract.currentTokenId();
+    await _contract.mint(tokenId);
 }
 
 const main = async () => {
@@ -41,7 +56,11 @@ const main = async () => {
     // await createColelction(`1st nft`, 'FST', 'ipfs://first');
     // console.log(`collection created`);
 
-    console.log(await showCollectionInfo('0x197d9055be710d4A72026A3B50d210Ccd1F8389A'));
+    const collection1ContractAddr = '0x79d4Dd5f7b32160625e00CF6927eF3414ea63490';
+    console.log(await showCollectionInfo(collection1ContractAddr));
+
+    // await mintTokenOfCollection(collection1ContractAddr);
+    console.log(await showTokenInfo(collection1ContractAddr, 0));
 }
 
 main().catch(e => {
